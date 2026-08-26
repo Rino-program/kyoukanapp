@@ -21,8 +21,17 @@ function verifyToken(string $token): ?array {
 	return is_array($claims) && (($claims['exp'] ?? 0) > time()) ? $claims : null;
 }
 function currentUser(bool $required = true): ?array {
-	$header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-	$claims = str_starts_with($header, 'Bearer ') ? verifyToken(substr($header, 7)) : null;
+	$header = $_SERVER['HTTP_AUTHORIZATION']
+		?? $_SERVER['Authorization']
+		?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+		?? $_SERVER['HTTP_X_AUTHORIZATION']
+		?? '';
+	if ($header === '' && function_exists('apache_request_headers')) {
+		$headers = apache_request_headers();
+		$header = (string) ($headers['Authorization'] ?? $headers['authorization'] ?? $headers['X-Authorization'] ?? $headers['x-authorization'] ?? '');
+	}
+	$token = preg_match('/^Bearer\s+/i', $header) ? trim(substr($header, 7)) : '';
+	$claims = $token !== '' ? verifyToken($token) : null;
 	if (!$claims && $required) fail('認証が必要です', 401);
 	return $claims;
 }

@@ -102,16 +102,17 @@ const API_BASE = 'https://rinoproxs.xsrv.jp/kyoukana/api';
 
 1. GitHubにリポジトリを作成します。
 2. `index.html`、`styles.css`、`js` フォルダーをpushします。
-3. SettingsのPagesを開き、Sourceに `Deploy from a branch`、Branchに `main`、Folderに `/ (root)` を指定して保存します。
-4. 発行されたURLを確認します。リポジトリ名が `kyoukanapp` の場合は `https://rino-program.github.io/kyoukanapp/` です。
-5. XServerの `api/config.php` で、GitHub Pagesのオリジンを次のように設定します。パスは含めません。
+3. SettingsのPagesを開き、Sourceに `GitHub Actions` を指定します。
+4. `main` ブランチへpushすると、`.github/workflows/pages.yml` が自動実行されます。Actionsタブで `Deploy GitHub Pages` が完了するまで待ちます。
+5. 発行されたURLを確認します。リポジトリ名が `kyoukanapp` の場合は `https://rino-program.github.io/kyoukanapp/` です。
+6. XServerの `api/config.php` で、GitHub Pagesのオリジンを次のように設定します。パスは含めません。
 
 ```php
 'allowed_origins' => ['https://rino-program.github.io'],
 ```
 
-6. XServerの `api/.htaccess` にも `rino-program.github.io` が設定されていることを確認します。
-7. GitHub Pagesの画面を開き、Googleログイン、教室一覧、予約一覧、予約作成を順番に確認します。
+7. XServerの `api/.htaccess` にも `rino-program.github.io` が設定されていることを確認します。
+8. GitHub Pagesの画面を開き、Googleログイン、教室一覧、予約一覧、予約作成を順番に確認します。
 
 URLは `https`、独自ドメイン、末尾スラッシュの有無まで一致させてください。
 
